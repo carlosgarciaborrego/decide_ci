@@ -2,8 +2,9 @@ dist: xenial
 services:
 - postgresql
 addons:
-  postgresql: '9.4'
+  postgresql: '9.6'
 before_script:
+- cp travis_local_settings.py local_settings.py 
 - psql -U postgres -c "create user decide password 'decide'"
 - psql -U postgres -c "create database test_decide owner decide"
 - psql -U postgres -c "ALTER USER decide CREATEDB"
@@ -14,7 +15,6 @@ install:
 - pip install -r requirements.txt
 script:
 - cd decide
-- cp travis_local_settings.py local_settings.py
 - python ./manage.py test --keepdb
 - rm local_settings.py
 deploy:
